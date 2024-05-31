@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>compileBitcode</key>
+	<false/>
+	<key>destination</key>
+	<string>export</string>
+	<key>method</key>
+	<string>development</string>
+	<key>signingStyle</key>
+	<string>manual</string>
+	<key>stripSwiftSymbols</key>
+	<true/>
+	<key>teamID</key>
+	<string>DT2C2FZ7U2</string>
+	<key>thinning</key>
+	<string>&lt;none&gt;</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios</key>
+		<string>Backyard-Birds OneMoreThingConf iOS Development</string>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.Widgets</key>
+		<string>Backyard-Birds OneMoreThingConf iOS Widgets</string>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.watch</key>
+		<string>Backyard-Birds OneMoreThingConf watchOS Developmen</string>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.watch.Widgets</key>
+		<string>Backyard-Birds OneMoreThingConf watchOS Widgets</string>
+	</dict>
+</dict>
+</plist>
