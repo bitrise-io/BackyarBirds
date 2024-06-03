@@ -21,10 +21,9 @@ meta:
     machine_type_id: g2-m1.8core
 
 workflows:
-  build:
-    summary: Build your Xcode project.
-    description: The workflow will first clone your Git repository, cache and install
-      your project's dependencies if any and build your project.
+  run_tests:
+    summary: Runs unit tests
+    description: The workflow will first clone your Git repository, download cached dependencies, and run your unit tests.
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8: {}
@@ -59,5 +58,3 @@ workflows:
         - verbose_log: 'yes'
         - export_options_plist_content: $EXPORT_OPTIONS
     - deploy-to-bitrise-io@2: {}
-
-
