@@ -50,7 +50,7 @@ workflows:
         title: Make export options available
         inputs:
         - script_file_path:
-        - content: envman add --key EXPORT_OPTIONS --value "$(cat Configuration/export_options.plist)"
+        - content: envman add --key EXPORT_OPTIONS --value "$(cat Misc/ExportOptionsDev.plist)"
     - xcode-archive@5:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
