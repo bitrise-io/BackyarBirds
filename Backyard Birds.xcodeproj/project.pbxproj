@@ -1321,7 +1321,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Backyard-Birds OneMoreThingConf iOS Widgets";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS Widgets";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS Widget";
 				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx watchos watchsimulator";
@@ -1368,12 +1368,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.Backyard-Birds.${SAMPLE_CODE_DISAMBIGUATOR}.Widgets";
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.Widgets";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = "com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.watch.Widgets";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = "com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.watch.Widgets";
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchsimulator*]" = "com.example.apple-samplecode.Backyard-Birds.$(SAMPLE_CODE_DISAMBIGUATOR).watch.Widgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Backyard-Birds OneMoreThingConf iOS Widgets";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS Widgets";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS Widget";
 				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx watchos watchsimulator";
@@ -1413,7 +1413,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.watch";
 				PRODUCT_NAME = "Backyard Birds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS Developmen";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1450,7 +1450,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.watch";
 				PRODUCT_NAME = "Backyard Birds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS Developmen";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Backyard-Birds OneMoreThingConf watchOS";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

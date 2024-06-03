@@ -64,28 +64,6 @@
                ReferencedContainer = "container:Backyard Birds.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AF57142A2C0D19AB001E9B8C"
-               BuildableName = "Backyard BirdsUITests.xctest"
-               BlueprintName = "Backyard BirdsUITests"
-               ReferencedContainer = "container:Backyard Birds.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AF57143B2C0D5AEA001E9B8C"
-               BuildableName = "BackyardBirdsUnitTests.xctest"
-               BlueprintName = "BackyardBirdsUnitTests"
-               ReferencedContainer = "container:Backyard Birds.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
