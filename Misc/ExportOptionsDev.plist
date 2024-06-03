@@ -7,7 +7,20 @@
 	<key>destination</key>
 	<string>export</string>
 	<key>method</key>
-	<string>development</string>
+	<string>debugging</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios</key>
+		<string>Backyard-Birds OneMoreThingConf iOS Development</string>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.Widgets</key>
+		<string>Backyard-Birds OneMoreThingConf iOS Widgets</string>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.watch</key>
+		<string>Backyard-Birds OneMoreThingConf watchOS</string>
+		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.watch.Widgets</key>
+		<string>Backyard-Birds OneMoreThingConf watchOS Widget</string>
+	</dict>
+	<key>signingCertificate</key>
+	<string>Apple Development</string>
 	<key>signingStyle</key>
 	<string>manual</string>
 	<key>stripSwiftSymbols</key>
@@ -16,16 +29,5 @@
 	<string>DT2C2FZ7U2</string>
 	<key>thinning</key>
 	<string>&lt;none&gt;</string>
-	<key>provisioningProfiles</key>
-	<dict>
-		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios</key>
-		<string>Backyard-Birds OneMoreThingConf iOS Development</string>
-		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.ios.Widgets</key>
-		<string>Backyard-Birds OneMoreThingConf iOS Widgets</string>
-		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.watch</key>
-		<string>Backyard-Birds OneMoreThingConf watchOS Developmen</string>
-		<key>com.example.apple-samplecode.Backyard-Birds.BITRISEOMTSAMPLE.watch.Widgets</key>
-		<string>Backyard-Birds OneMoreThingConf watchOS Widgets</string>
-	</dict>
 </dict>
 </plist>
