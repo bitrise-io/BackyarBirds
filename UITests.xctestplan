@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "DC05062F-5170-46FD-B952-C58A8BF1190D",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Backyard Birds.xcodeproj",
+      "identifier" : "E0A466C22A153A0E0010173E",
+      "name" : "Backyard Birds"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "skippedTests" : [
+        "PlantsUITests"
+      ],
+      "target" : {
+        "containerPath" : "container:Backyard Birds.xcodeproj",
+        "identifier" : "AF57142A2C0D19AB001E9B8C",
+        "name" : "Backyard BirdsUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

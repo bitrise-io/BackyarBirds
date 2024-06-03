@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "56ADF3B3-E317-418F-8685-941592AB73DA",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Backyard Birds.xcodeproj",
+        "identifier" : "AF57143B2C0D5AEA001E9B8C",
+        "name" : "BackyardBirdsUnitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
