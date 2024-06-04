@@ -16,7 +16,7 @@
       "skippedTests" : [
         "BackyardsUITests",
         "BirdsUITests",
-        "FailingUITests"
+        "PlantsUITests"
       ],
       "target" : {
         "containerPath" : "container:Backyard Birds.xcodeproj",

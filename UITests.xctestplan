@@ -20,7 +20,7 @@
     {
       "parallelizable" : true,
       "skippedTests" : [
-        "PlantsUITests"
+        "FailingUITests"
       ],
       "target" : {
         "containerPath" : "container:Backyard Birds.xcodeproj",
