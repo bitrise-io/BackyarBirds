@@ -14,11 +14,11 @@
       "containerPath" : "container:Backyard Birds.xcodeproj",
       "identifier" : "E0A466C22A153A0E0010173E",
       "name" : "Backyard Birds"
-    }
+    },
+    "testExecutionOrdering" : "random"
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "skippedTests" : [
         "FailingUITests"
       ],
