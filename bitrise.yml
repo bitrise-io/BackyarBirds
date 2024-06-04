@@ -1,0 +1,60 @@
+---
+format_version: '13'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+
+trigger_map:
+- push_branch: main
+  workflow: build
+- pull_request_source_branch: "*"
+  workflow: build
+
+app:
+  envs:
+  - BITRISE_PROJECT_PATH: Backyard Birds.xcodeproj
+  - BITRISE_SCHEME: Backyard Birds
+  - BITRISE_DISTRIBUTION_METHOD: development
+
+meta:
+  bitrise.io:
+    stack: osx-xcode-15.3.x
+    machine_type_id: g2-m1.8core
+
+workflows:
+  run_tests:
+    summary: Runs unit tests
+    description: The workflow will first clone your Git repository, download cached dependencies, and run your unit tests.
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - restore-spm-cache@2: {}
+    - xcode-test@5:
+        inputs:
+        - xcodebuild_options:
+        - test_plan: UnitTests
+    - save-spm-cache@1: {}
+    - deploy-to-bitrise-io@2: {}
+
+  archive_and_export_app:
+    summary: Create an IPA file to install your app on a device or share it with your
+      team.
+    description: The workflow will first clone your Git repository, cache and install
+      your project's dependencies if any, export an IPA file from the project and
+      save it.
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - certificate-and-profile-installer@1: {}
+    - script@1:
+        title: Make export options available
+        inputs:
+        - script_file_path:
+        - content: envman add --key EXPORT_OPTIONS --value "$(cat Misc/ExportOptionsDev.plist)"
+    - xcode-archive@5:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+        - scheme: $BITRISE_SCHEME
+        - distribution_method: $BITRISE_DISTRIBUTION_METHOD
+        - verbose_log: 'yes'
+        - export_options_plist_content: $EXPORT_OPTIONS
+    - deploy-to-bitrise-io@2: {}
