@@ -9,6 +9,7 @@
     }
   ],
   "defaultOptions" : {
+    "testExecutionOrdering" : "random",
     "testTimeoutsEnabled" : true
   },
   "testTargets" : [
@@ -16,7 +17,7 @@
       "skippedTests" : [
         "BackyardsUITests",
         "BirdsUITests",
-        "FailingUITests"
+        "PlantsUITests"
       ],
       "target" : {
         "containerPath" : "container:Backyard Birds.xcodeproj",
