@@ -45,6 +45,9 @@ workflows:
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8: {}
+  
+  _start_cpu_monitor:
+    steps:
     - script:
         title: Start cursed shell script in the background
         inputs:
@@ -169,6 +172,7 @@ workflows:
         stack: osx-xcode-15.4.x
         machine_type_id: g2-m1-max.10core
     before_run:
+    - _start_cpu_monitor
     - _clone
     meta:
       bitrise.io:
@@ -187,6 +191,7 @@ workflows:
         - xctestrun: "$BITRISE_TEST_BUNDLE_PATH/Backyard Birds_UITests_iphonesimulator17.5-arm64-x86_64.xctestrun"
     - deploy-to-bitrise-io@2: {}
     before_run:
+    - _start_cpu_monitor
     - _get_bundle
 
   unit_test:
@@ -201,4 +206,5 @@ workflows:
         - destination: platform=iOS Simulator,name=iPhone 15,OS=17.5
     - deploy-to-bitrise-io@2: {}
     before_run:
+    - _start_cpu_monitor
     - _get_bundle
