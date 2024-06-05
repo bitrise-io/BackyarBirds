@@ -45,6 +45,53 @@ workflows:
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8: {}
+    - script:
+        title: Start cursed shell script in the background
+        inputs:
+        - content: |
+            #!/usr/bin/env bash
+
+            set -e
+            set -o pipefail
+            set -x
+
+            check_cpu_usage() {
+              num_cores=$(sysctl -n hw.ncpu)
+              max_cpu_usage=$((num_cores * 1000))
+
+              while true; do
+                output=$(sudo powermetrics -s tasks -n 1 --order cputime)
+                processes=$(echo "$output" | awk '/^Name/ { table_start=1; print $0; next } table_start == 1 { print } /^ALL_TASKS/ { next }')
+
+                msg=""
+                while IFS= read -r line; do
+                  if [[ "$line" =~ ^Name ]]; then
+                    continue
+                  elif [[ "$line" =~ ^ALL_TASKS ]]; then
+                    continue
+                  elif [[ -z "$line" ]]; then
+                    msg+=$'\n' # Use $'\n' for actual newlines
+                  else
+                    name=$(echo "$line" | awk '{ print $1 }')
+                    cpu_usage=$(echo "$line" | awk '{ print $3 }')
+                    cpu_usage_int=$( printf "%d" "${cpu_usage%.*}" )
+                    bar_length=$((cpu_usage_int * 50 / max_cpu_usage))
+                    bar=$(printf "%${bar_length}s" | sed 's/ /█/g')
+                    empty_bar=$(printf "%$((50 - bar_length))s" | sed 's/ /░/g')
+                    msg+=$'\n'"${bar}${empty_bar} **${name}:** ${cpu_usage} ms/s CPU time"
+                  fi
+                done <<< "$processes"
+
+                read -r -d '' to_print << EOM
+            ## CPU Usage:
+            $msg
+            EOM
+
+                bitrise :annotations annotate "$to_print" --context cpu_usage
+              done
+            }
+
+            nohup bash -c "$(declare -f check_cpu_usage); check_cpu_usage" &
 
   _get_bundle:
     summary: Build your Xcode project.
