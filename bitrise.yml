@@ -167,6 +167,7 @@ workflows:
       3. Once the build starts you'll see the details on the build's page about how you can access the remote environment.
     before_run:
     - build_for_testing
+    - unit_test
     steps:
     # - activate-ssh-key@4: {}
     # - git-clone@8: {}
