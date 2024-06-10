@@ -165,9 +165,11 @@ workflows:
       1. Start a build on bitrise.io with this workflow, and as soon as it starts click `Abort`.
       2. Click `Rebuild with remote access`.
       3. Once the build starts you'll see the details on the build's page about how you can access the remote environment.
+    before_run:
+    - build-for-testing
     steps:
-    - activate-ssh-key@4: {}
-    - git-clone@8: {}
+    # - activate-ssh-key@4: {}
+    # - git-clone@8: {}
     - script@1:
         title: Sleep for 1 hour
         inputs:
