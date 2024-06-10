@@ -167,10 +167,14 @@ workflows:
       3. Once the build starts you'll see the details on the build's page about how you can access the remote environment.
     before_run:
     - build_for_testing
-    - unit_test
     steps:
     # - activate-ssh-key@4: {}
     # - git-clone@8: {}
+    - xcode-test-without-building@0:
+        inputs:
+        - xcodebuild_options:
+        - xctestrun: "$BITRISE_TEST_BUNDLE_PATH/Backyard Birds_UnitTests_iphonesimulator17.5-arm64-x86_64.xctestrun"
+        - destination: platform=iOS Simulator,name=iPhone 15,OS=17.5
     - script@1:
         title: Sleep for 1 hour
         inputs:
