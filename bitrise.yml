@@ -166,7 +166,7 @@ workflows:
       2. Click `Rebuild with remote access`.
       3. Once the build starts you'll see the details on the build's page about how you can access the remote environment.
     before_run:
-    - build-for-testing
+    - build_for_testing
     steps:
     # - activate-ssh-key@4: {}
     # - git-clone@8: {}
