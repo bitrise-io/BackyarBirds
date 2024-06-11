@@ -158,6 +158,12 @@ workflows:
 
   xctestresults_html_report:
     steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - xcode-test@5:
+        inputs:
+        - xcodebuild_options:
+        - test_plan: UnitTests
     - script@1:
         title: Generate xclogparser HTML report
         deps:
