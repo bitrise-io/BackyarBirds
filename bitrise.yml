@@ -32,7 +32,9 @@ workflows:
         inputs:
         - xcodebuild_options:
         - test_plan: UnitTests
-    - save-spm-cache@1: {}
+    - save-spm-cache@1:
+        inputs:
+        - derived_data_path: ""
     - deploy-to-bitrise-io@2: {}
 
   archive_and_export_app:
