@@ -65,7 +65,7 @@ workflows:
     - script@1:
         inputs:
         - script_file_path:
-        - content: envman add --key EXPORT_OPTIONS --value "$(cat Configuration/export_options.plist)"
+        - content: envman add --key EXPORT_OPTIONS --value "$(cat Misc/ExportOptionsDev.plist)"
         title: Make export options available
 
   run_tests:
