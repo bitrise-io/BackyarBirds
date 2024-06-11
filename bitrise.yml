@@ -155,3 +155,86 @@ workflows:
     - deploy-to-bitrise-io@2: {}
     before_run:
     - _get_bundle
+  dd-cache:
+    description: |
+      The workflow executes the tests. The *retry_on_failure* test repetition mode is enabled.
+
+      Next steps:
+      - Check out [Getting started with iOS apps](https://devcenter.bitrise.io/en/getting-started/getting-started-with-ios-apps.html).
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8:
+        inputs:
+        - submodule_update_depth: '1'
+    - git-clone@8:
+        title: download cache tools
+        inputs:
+        - repository_url: git@github.com:bitrise-io/xcodebuild-cache-tools.git
+        - branch: main
+        - commit:
+        - clone_into_dir: cache-tools
+    - restore-cache@2:
+        inputs:
+        - verbose: 'true'
+        - key: dd-bb-incremental-test
+    - script@1:
+        title: untar cache & mtime
+        inputs:
+        - script_file_path:
+        - content: "#!/usr/bin/env bash\n# fail if any commands fails\nset -e\n# make
+            pipelines' return status equal the last command to exit with a non-zero
+            status, or zero if all commands exit successfully\nset -o pipefail\n#
+            debug log\nset -x\n\nif [ -f dd-tar-cache/dd.tar ]; \nthen\n    tar xPpf
+            dd-tar-cache/dd.tar;\n    go run cache-tools/restore-mtime/main.go . file_info.json\nelse
+            \n    echo \"No cache file\"; \nfi\n"
+    - script@1:
+        inputs:
+        - script_file_path:
+        - content: |+
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+
+
+            mkdir -p ~/DerivedData
+
+            touch log
+
+            xcodebuild build -destination 'platform=iOS Simulator,name=iPhone 11' -scheme "${BITRISE_SCHEME}" -project "${BITRISE_PROJECT_PATH}" -derivedDataPath ~/DerivedData  CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -resultBundlePath blah.xcresult -showBuildTimingSummary > log
+
+            tail -n 100 log
+
+        title: build
+    - script@1:
+        title: tar dd
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            mkdir -p dd-tar-cache && tar cfPp dd-tar-cache/dd.tar --format posix ~/DerivedData/
+    - script@1:
+        title: save mtime
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -ex
+            set -o pipefail
+
+            go run cache-tools/save-mtime/main.go .
+    - save-cache@1:
+        inputs:
+        - paths: |-
+            dd-tar-cache
+            file_info.json
+        - key: dd-bb-incremental-test
