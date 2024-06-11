@@ -155,3 +155,55 @@ workflows:
     - deploy-to-bitrise-io@2: {}
     before_run:
     - _get_bundle
+
+  xctestresults_html_report:
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - xcode-test@5:
+        inputs:
+        - xcodebuild_options:
+        - test_plan: UnitTests
+    - script@1:
+        title: Generate xclogparser HTML report
+        inputs:
+        - content: |
+            #!/bin/bash
+            set -ex
+            brew install xclogparser
+            xclogparser parse --project 'Backyard_Birds' --reporter html --rootOutput "$BITRISE_HTML_REPORT_DIR/xclogparser/"
+    - script@1:
+        title: Generate xclogparser chromeTracer report
+        inputs:
+        - content: |
+            #!/bin/bash
+            set -ex
+            brew install xclogparser
+            
+            # chrome://tracing
+            xclogparser parse --project 'Backyard_Birds' --reporter chromeTracer > "$BITRISE_DEPLOY_DIR/trace.json"
+    - deploy-to-bitrise-io@2: {}
+
+  remote_test_env:
+    summary: Start a remote test environment
+    description: |
+      To start a remote test environment, run a build on bitrise.io with this workflow, with remote access enabled.
+
+      Steps:
+      1. Start a build on bitrise.io with this workflow, and as soon as it starts click `Abort`.
+      2. Click `Rebuild with remote access`.
+      3. Once the build starts you'll see the details on the build's page about how you can access the remote environment.
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - xcode-test@5:
+        inputs:
+        - xcodebuild_options:
+        - test_plan: UnitTests
+    - script@1:
+        title: Sleep for 1 hour
+        inputs:
+        - content: |
+            #!/bin/bash
+            set -ex
+            sleep 3600
