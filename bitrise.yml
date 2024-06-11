@@ -168,13 +168,12 @@ workflows:
     before_run:
     - build_for_testing
     steps:
-    # - activate-ssh-key@4: {}
-    # - git-clone@8: {}
-    - xcode-test-without-building@0:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - xcode-test@5:
         inputs:
         - xcodebuild_options:
-        - xctestrun: "$BITRISE_TEST_BUNDLE_PATH/Backyard Birds_UnitTests_iphonesimulator17.5-arm64-x86_64.xctestrun"
-        - destination: platform=iOS Simulator,name=iPhone 15,OS=17.5
+        - test_plan: UnitTests
     - script@1:
         title: Sleep for 1 hour
         inputs:
