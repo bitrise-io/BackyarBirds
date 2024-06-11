@@ -156,11 +156,6 @@ workflows:
     before_run:
     - _get_bundle
   dd-cache:
-    description: |
-      The workflow executes the tests. The *retry_on_failure* test repetition mode is enabled.
-
-      Next steps:
-      - Check out [Getting started with iOS apps](https://devcenter.bitrise.io/en/getting-started/getting-started-with-ios-apps.html).
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8:
