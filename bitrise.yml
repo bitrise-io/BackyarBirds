@@ -172,6 +172,16 @@ workflows:
             set -ex
             brew install xclogparser
             xclogparser parse --project 'Backyard_Birds' --reporter html --rootOutput "$BITRISE_HTML_REPORT_DIR/xclogparser/"
+    - script@1:
+        title: Generate xclogparser chromeTracer report
+        inputs:
+        - content: |
+            #!/bin/bash
+            set -ex
+            brew install xclogparser
+            
+            # chrome://tracing
+            xclogparser parse --project 'Backyard_Birds' --reporter chromeTracer > "$BITRISE_DEPLOY_DIR/trace.json"
     - deploy-to-bitrise-io@2: {}
 
   remote_test_env:
