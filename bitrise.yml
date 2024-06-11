@@ -173,7 +173,8 @@ workflows:
         - content: |
             #!/bin/bash
             set -ex
-            xclogparser parse --project 'Backyard_Birds' --reporter html --rootOutput "$BITRISE_HTML_REPORT_DIR/xclogparser"
+            xclogparser parse --project 'Backyard_Birds' --reporter html --rootOutput "./xclogparser-out"
+            rsync -avhP ./xclogparser-out/ "$BITRISE_HTML_REPORT_DIR/xclogparser/"
 
   remote_test_env:
     summary: Start a remote test environment
