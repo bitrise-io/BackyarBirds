@@ -89,6 +89,9 @@ workflows:
       your project's dependencies if any, export an IPA file from the project and
       save it.
     steps:
+    - set-xcode-build-number@2:
+        inputs:
+        - build_number: $BITRISE_BUILD_NUMBER
     - xcode-archive@5:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
