@@ -5,9 +5,9 @@ project_type: ios
 
 trigger_map:
 - push_branch: main
-  workflow: build
+  workflow: run_tests
 - pull_request_source_branch: "*"
-  workflow: build
+  workflow: run_tests
 
 app:
   envs:
