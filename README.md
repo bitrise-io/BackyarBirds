@@ -1,6 +1,6 @@
 # Backyard Birds: Building an app with SwiftData and widgets
 
-Create an app with persistent data, interactive widgets, and an all new in-app purchase experience.
+Create an app with persistent data, interactive widgets, and an all new in-app purchase experience. Yay.
 
 ## Overview
 
