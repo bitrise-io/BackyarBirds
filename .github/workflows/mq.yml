@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./scripts
+        working-directory: scripts
     steps:
       - name: my-step
         run: ./gitrise.sh -a $BITRISE_TOKEN -s $BITRISE_APP_SLUG -w script -b $GITHUB_REF
