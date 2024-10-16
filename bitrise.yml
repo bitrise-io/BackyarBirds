@@ -1,0 +1,221 @@
+---
+format_version: '13'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+
+trigger_map:
+- push_branch: main
+  pipeline: build_then_test
+- pull_request_source_branch: "*"
+  pipeline: build_then_test
+
+app:
+  envs:
+  - BITRISE_PROJECT_PATH: Backyard Birds.xcodeproj
+  - BITRISE_SCHEME: Backyard Birds
+  - BITRISE_DISTRIBUTION_METHOD: development
+
+meta:
+  bitrise.io:
+    stack: osx-xcode-15.3.x
+    machine_type_id: g2-m1.8core
+
+
+pipelines:
+  build_then_test:
+    stages:
+    - build_for_testing: {}
+    - test: {}
+stages:
+  build_for_testing:
+    workflows:
+    - build_for_testing: {}
+    - check_pr: {}
+  test:
+    workflows:
+    - ui_test: {}
+    - unit_test: {}
+
+workflows:
+  _clone:
+    summary: Create an IPA file to install your app on a device or share it with your
+      team.
+    description: The workflow will first clone your Git repository, cache and install
+      your project's dependencies if any, export an IPA file from the project and
+      save it.
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+  
+  _start_cpu_monitor:
+    steps:
+    - script:
+        title: Start cursed shell script in the background
+        inputs:
+        - content: |
+            #!/usr/bin/env bash
+
+            set -e
+            set -o pipefail
+            set -x
+
+            check_cpu_usage() {
+              num_cores=$(sysctl -n hw.ncpu)
+              max_cpu_usage=$((num_cores * 1000))
+
+              while true; do
+                output=$(sudo powermetrics -s tasks -n 1 --order cputime)
+                processes=$(echo "$output" | awk '/^Name/ { table_start=1; print $0; next } table_start == 1 { print } /^ALL_TASKS/ { next }')
+
+                msg=""
+                while IFS= read -r line; do
+                  if [[ "$line" =~ ^Name ]]; then
+                    continue
+                  elif [[ "$line" =~ ^ALL_TASKS ]]; then
+                    continue
+                  elif [[ -z "$line" ]]; then
+                    msg+=$'\n' # Use $'\n' for actual newlines
+                  else
+                    name=$(echo "$line" | awk '{ print $1 }')
+                    cpu_usage=$(echo "$line" | awk '{ print $3 }')
+                    cpu_usage_int=$( printf "%d" "${cpu_usage%.*}" )
+                    bar_length=$((cpu_usage_int * 50 / max_cpu_usage))
+                    bar=$(printf "%${bar_length}s" | sed 's/ /█/g')
+                    empty_bar=$(printf "%$((50 - bar_length))s" | sed 's/ /░/g')
+                    msg+=$'\n'"${bar}${empty_bar} **${name}:** ${cpu_usage} ms/s CPU time"
+                  fi
+                done <<< "$processes"
+
+                read -r -d '' to_print << EOM
+            ## CPU Usage:
+            $msg
+            EOM
+
+                bitrise :annotations annotate "$to_print" --context cpu_usage
+              done
+            }
+
+            nohup bash -c "$(declare -f check_cpu_usage); check_cpu_usage" &
+
+  _get_bundle:
+    summary: Build your Xcode project.
+    description: The workflow will first clone your Git repository, cache and install
+      your project's dependencies if any and build your project.
+    before_run: []
+    steps:
+    - pull-intermediate-files@1: {}
+
+  _setup_codesigning:
+    summary: Create an IPA file to install your app on a device or share it with your
+      team.
+    description: The workflow will first clone your Git repository, cache and install
+      your project's dependencies if any, export an IPA file from the project and
+      save it.
+    steps:
+    - certificate-and-profile-installer@1: {}
+    - script@1:
+        inputs:
+        - script_file_path:
+        - content: envman add --key EXPORT_OPTIONS --value "$(cat Configuration/export_options.plist)"
+        title: Make export options available
+
+  run_tests:
+    summary: Runs unit tests
+    description: The workflow will first clone your Git repository, download cached dependencies, and run your unit tests.
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - restore-spm-cache@2: {}
+    - xcode-test@5:
+        inputs:
+        - xcodebuild_options:
+        - test_plan: UnitTests
+    - save-spm-cache@1: {}
+    - deploy-to-bitrise-io@2: {}
+
+  archive_and_export_app:
+    summary: Create an IPA file to install your app on a device or share it with your
+      team.
+    description: The workflow will first clone your Git repository, cache and install
+      your project's dependencies if any, export an IPA file from the project and
+      save it.
+    steps:
+    - xcode-archive@5:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+        - scheme: $BITRISE_SCHEME
+        - distribution_method: $BITRISE_DISTRIBUTION_METHOD
+        - verbose_log: 'yes'
+        - export_options_plist_content: $EXPORT_OPTIONS
+    - deploy-to-bitrise-io@2: {}
+    before_run:
+    - _clone
+    - _setup_codesigning
+    meta:
+      bitrise.io:
+        stack: osx-xcode-15.4.x
+        machine_type_id: g2-m1-max.10core
+
+  build_for_testing:
+    summary: Create a test bundle
+    description: Creates a test bundle for use in test-without-building.
+    steps:
+    - xcode-build-for-test@3:
+        inputs:
+        - apple_team_id:
+        - destination: generic/platform=iOS Simulator
+        - xcodebuild_options: CODE_SIGNING_ALLOWED=NO
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - pipeline_intermediate_files: "$BITRISE_TEST_BUNDLE_PATH:BITRISE_TEST_BUNDLE_PATH"
+    meta:
+      bitrise.io:
+        stack: osx-xcode-15.4.x
+        machine_type_id: g2-m1-max.10core
+    before_run:
+    - _start_cpu_monitor
+    - _clone
+
+  ui_test:
+    summary: Runs UI test plan.
+    description: Runs UI test plan.
+    steps:
+    - xcode-test-without-building@0:
+        inputs:
+        - xcodebuild_options: "-parallel-testing-worker-count 3 -parallel-testing-enabled
+            YES"
+        - destination: platform=iOS Simulator,name=iPhone 15,OS=17.5
+        - xctestrun: "$BITRISE_TEST_BUNDLE_PATH/Backyard Birds_UITests_iphonesimulator17.5-arm64-x86_64.xctestrun"
+    - generate-xcode-html-report: {}
+    - deploy-to-bitrise-io@2: {}
+    before_run:
+    - _start_cpu_monitor
+    - _get_bundle
+
+  unit_test:
+    summary: Build your Xcode project.
+    description: The workflow will first clone your Git repository, cache and install
+      your project's dependencies if any and build your project.
+    steps:
+    - xcode-test-without-building@0:
+        inputs:
+        - xcodebuild_options:
+        - xctestrun: "$BITRISE_TEST_BUNDLE_PATH/Backyard Birds_UnitTests_iphonesimulator17.5-arm64-x86_64.xctestrun"
+        - destination: platform=iOS Simulator,name=iPhone 15,OS=17.5
+    - generate-xcode-html-report: {}
+    - deploy-to-bitrise-io@2: {}
+    before_run:
+    - _start_cpu_monitor
+    - _get_bundle
+
+  check_pr:
+    summary: Various checks for the PR content and metadata
+    steps:
+      - git::https://github.com/ofalvai/bitrise-step-code-review-gpt:
+          title: CodeReviewGPT
+          inputs:
+          - openai_api_key: $OPENAI_API_KEY
+          - openai_model: gpt-4o
+          - verbose: "true"
+          - github_token: $GITHUB_TOKEN
+          - repo_description: Based on Apple's BackyardBirds sample project, this is a playground for demonstrating Bitrise features and let people try them out.
