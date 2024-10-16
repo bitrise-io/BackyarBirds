@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: my-step 1
-        run: ls
+        run: ls ..
       - name: my-step 2
         run: ./gitrise.sh -a $BITRISE_TOKEN -s $BITRISE_APP_SLUG -w script -b $GITHUB_REF
