@@ -6,9 +6,8 @@ jobs:
   tests:
     if: ${{ github.event.label.name == 'run' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: scripts
     steps:
-      - name: my-step
+      - name: my-step 1
+        run: pwd && ls
+      - name: my-step 2
         run: ./gitrise.sh -a $BITRISE_TOKEN -s $BITRISE_APP_SLUG -w script -b $GITHUB_REF
