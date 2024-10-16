@@ -11,4 +11,4 @@ jobs:
       - name: Check out the repository to the runner
         uses: actions/checkout@v4  
       - name: my-step 2
-        run: ./gitrise.sh -a $BITRISE_TOKEN -s $BITRISE_APP_SLUG -w script -b $GITHUB_REF
+        run: ./gitrise.sh --access-token $BITRISE_TOKEN --slug $BITRISE_APP_SLUG --workflow script --branch $GITHUB_REF
